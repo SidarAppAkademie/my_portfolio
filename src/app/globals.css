@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 225 21% 12%; /* Deep Navy Blue */
+    --foreground: 210 40% 98%;
+    --card: 225 21% 15%; /* Slightly Lighter Navy */
+    --card-foreground: 210 40% 98%;
+    --popover: 225 21% 12%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 184 100% 74%; /* Electric Blue */
+    --primary-foreground: 224 47% 10%;
+    --secondary: 225 21% 20%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 225 21% 20%;
+    --muted-foreground: 210 40% 60%;
+    --accent: 184 100% 74%; /* Using primary color as accent for simplicity */
+    --accent-foreground: 224 47% 10%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 225 21% 20%;
+    --input: 225 21% 20%;
+    --ring: 184 100% 74%; /* Electric Blue */
+    --radius: 0.5rem;
+
+    /* Custom variables for dot animation */
+    --dot-color: hsla(206, 87%, 53%, 0.5); /* A lighter blue */
+    --dot-interaction-color: hsla(206, 87%, 65%, 0.8);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    min-height: 100vh;
+  }
+}
