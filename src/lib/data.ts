@@ -91,7 +91,7 @@ export const projects = [
     description: "A modern, responsive portfolio template built with Next.js, Tailwind CSS, and shadcn/ui. Features Genkit AI integration for dynamic profile creation from CVs.",
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "Genkit", "ShadCN/UI"],
     image: projectImages.project2,
-    githubUrl: "https://github.com/SidarAppAkademie/pac-service-website.git",
+    githubUrl: "https://github.com/SidarAppAkademie/my_portfolio.git",
   },
   {
     title: "PAC SERVICE - Reinigungsdienste Website",
