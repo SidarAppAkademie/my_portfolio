@@ -7,7 +7,7 @@ import React, {
   useCallback,
 } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, TargetAndTransition } from "framer-motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -108,42 +108,70 @@ export const ProjectCarousel = ({
     resetAutoplay();
   }, [projectsLength, resetAutoplay]);
 
-  function getProjectStyle(index: number): React.CSSProperties {
+  function getProjectStyle(index: number): TargetAndTransition {
     const gap = calculateGap(containerWidth);
-    const offset = index - activeIndex;
-    const zIndex = projectsLength - Math.abs(offset);
+    const maxStickUp = gap * 0.7;
+    const offset = (index - activeIndex + projectsLength) % projectsLength;
+    const isVisible = Math.abs(offset) <= 1 || offset === projectsLength - 1 || offset === 1 - projectsLength;
     
-    if (offset === 0) {
+    if (index === activeIndex) {
       return {
         zIndex: 3,
         opacity: 1,
-        position: "absolute",
-        left: "50%",
-        transform: "translateX(-50%) scale(1)",
-        pointerEvents: "auto"
+        pointerEvents: "auto",
+        transform: `translateX(0px) translateY(0px) scale(1) rotateY(0deg)`,
       };
     }
     
+    if ((activeIndex - 1 + projectsLength) % projectsLength === index) { // Sol taraftaki proje
+      return {
+        zIndex: 2,
+        opacity: 0.8,
+        pointerEvents: "auto",
+        transform: `translateX(-${gap}px) translateY(${maxStickUp}px) scale(0.85) rotateY(25deg)`,
+      };
+    }
+    
+    if ((activeIndex + 1) % projectsLength === index) { // Sağ taraftaki proje
+      return {
+        zIndex: 2,
+        opacity: 0.8,
+        pointerEvents: "auto",
+        transform: `translateX(${gap}px) translateY(${maxStickUp}px) scale(0.85) rotateY(-25deg)`,
+      };
+    }
+
+    // Görünmeyen projeler
     return {
-      zIndex,
-      opacity: 0.5,
-      position: "absolute",
-      left: "50%",
-      transform: `translateX(calc(-50% + ${offset * gap}px)) scale(0.8)`,
-      pointerEvents: "none"
+      zIndex: 1,
+      opacity: 0,
+      pointerEvents: "none",
+      transform: `translateX(0px) translateY(0px) scale(0.7) rotateY(0deg)`,
     };
   }
 
   return (
     <div className="w-full max-w-5xl relative flex flex-col items-center">
-      <div className="h-[32rem] sm:h-[34rem] w-full relative" ref={imageContainerRef} style={{ perspective: "1200px" }}>
+      <div 
+        className="h-[32rem] sm:h-[34rem] w-full relative" 
+        ref={imageContainerRef} 
+        style={{ 
+          perspective: "1200px",
+          perspectiveOrigin: "center",
+          transformStyle: "preserve-3d"
+        }}>
         {projects.map((project, index) => (
             <motion.div
                 key={project.title + index}
                 className="absolute w-full h-full flex items-center justify-center"
-                style={getProjectStyle(index)}
+                style={{ transformStyle: "preserve-3d" }}
                 initial={false}
-                transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                animate={getProjectStyle(index)}
+                transition={{
+                  duration: 0.8,
+                  ease: [0.4, 0, 0.2, 1],
+                  opacity: { duration: 0.5 }
+                }}
              >
                 <Card className="w-[80%] max-w-md h-full flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-primary/20 hover:shadow-lg">
                     {project.image && (
