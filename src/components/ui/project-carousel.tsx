@@ -110,42 +110,27 @@ export const ProjectCarousel = ({
 
   function getProjectStyle(index: number): React.CSSProperties {
     const gap = calculateGap(containerWidth);
-    const maxStickUp = gap * 0.7; // Adjusted for better visual
-    const offset = (index - activeIndex + projectsLength) % projectsLength;
-    const isVisible = Math.abs(offset) <= 1 || offset === projectsLength - 1 || offset === 1 - projectsLength;
+    const offset = index - activeIndex;
+    const zIndex = projectsLength - Math.abs(offset);
     
-    if (index === activeIndex) {
+    if (offset === 0) {
       return {
         zIndex: 3,
         opacity: 1,
-        pointerEvents: "auto",
-        transform: `translateX(0px) translateY(0px) scale(1) rotateY(0deg)`,
+        position: "absolute",
+        left: "50%",
+        transform: "translateX(-50%) scale(1)",
+        pointerEvents: "auto"
       };
     }
     
-    if ((activeIndex - 1 + projectsLength) % projectsLength === index) { // Left item
-      return {
-        zIndex: 2,
-        opacity: 0.8,
-        pointerEvents: "auto",
-        transform: `translateX(-${gap}px) translateY(${maxStickUp}px) scale(0.85) rotateY(25deg)`,
-      };
-    }
-    
-    if ((activeIndex + 1) % projectsLength === index) { // Right item
-      return {
-        zIndex: 2,
-        opacity: 0.8,
-        pointerEvents: "auto",
-        transform: `translateX(${gap}px) translateY(${maxStickUp}px) scale(0.85) rotateY(-25deg)`,
-      };
-    }
-
     return {
-      zIndex: 1,
-      opacity: 0,
-      pointerEvents: "none",
-      transform: `translateX(0px) translateY(0px) scale(0.7) rotateY(0deg)`,
+      zIndex,
+      opacity: 0.5,
+      position: "absolute",
+      left: "50%",
+      transform: `translateX(calc(-50% + ${offset * gap}px)) scale(0.8)`,
+      pointerEvents: "none"
     };
   }
 
@@ -156,14 +141,8 @@ export const ProjectCarousel = ({
             <motion.div
                 key={project.title + index}
                 className="absolute w-full h-full flex items-center justify-center"
-                style={{ transform: "preserve-3d" }}
+                style={getProjectStyle(index)}
                 initial={false}
-                animate={{
-                  x: getProjectStyle(index).x,
-                  y: getProjectStyle(index).y,
-                  scale: getProjectStyle(index).scale,
-                  opacity: getProjectStyle(index).opacity
-                }}
                 transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
              >
                 <Card className="w-[80%] max-w-md h-full flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-primary/20 hover:shadow-lg">
