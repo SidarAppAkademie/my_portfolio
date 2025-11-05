@@ -47,24 +47,20 @@ export function AnimatedCard({ className, title, description, icons = [] }: Anim
 }
 
 function AnimatedIcons({ icons }: { icons: AnimatedCardProps["icons"] }) {
-  const scale = [1, 1.1, 1]
-  const transform = ["translateY(0px)", "translateY(-4px)", "translateY(0px)"]
+  const controls = useAnimation()
   
-  const sequence = icons?.map((_, index) => [
-    `.circle-${index + 1}`,
-    { scale, transform },
-    { duration: 0.8 },
-  ])
-
   useEffect(() => {
-    if (sequence) {
-        // @ts-ignore
-        animate(sequence, {
-            repeat: Infinity,
-            repeatDelay: 1,
+    const animation = async () => {
+      while (true) {
+        await controls.start({ 
+          scale: scale,
+          transform: transform,
+          transition: { duration: 0.8 }
         })
+      }
     }
-  }, [sequence])
+    animation()
+  }, [])
 
   return (
     <div className="p-8 overflow-hidden h-full relative flex items-center justify-center z-10">

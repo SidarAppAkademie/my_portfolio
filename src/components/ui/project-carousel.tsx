@@ -156,7 +156,7 @@ export const ProjectCarousel = ({
             <motion.div
                 key={project.title + index}
                 className="absolute w-full h-full flex items-center justify-center"
-                style={{ transformStyle: "preserve-3d" }}
+                style={{ transform: "preserve-3d" } as any}
                 initial={false}
                 animate={getProjectStyle(index)}
                 transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
