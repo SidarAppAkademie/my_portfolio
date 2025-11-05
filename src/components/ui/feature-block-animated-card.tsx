@@ -47,20 +47,9 @@ export function AnimatedCard({ className, title, description, icons = [] }: Anim
 }
 
 function AnimatedIcons({ icons }: { icons: AnimatedCardProps["icons"] }) {
-  const controls = useAnimation()
+  const [isAnimating, setIsAnimating] = useState(true)
   
-  useEffect(() => {
-    const animation = async () => {
-      while (true) {
-        await controls.start({ 
-          scale: scale,
-          transform: transform,
-          transition: { duration: 0.8 }
-        })
-      }
-    }
-    animation()
-  }, [])
+  return
 
   return (
     <div className="p-8 overflow-hidden h-full relative flex items-center justify-center z-10">
