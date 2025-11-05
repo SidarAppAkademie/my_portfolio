@@ -156,8 +156,9 @@ export const ProjectCarousel = ({
             <motion.div
                 key={project.title + index}
                 className="absolute w-full h-full flex items-center justify-center"
-                style={getProjectStyle(index)}
+                style={{ transformStyle: "preserve-3d" }}
                 initial={false}
+                animate={getProjectStyle(index) as any}
                 transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
              >
                 <Card className="w-[80%] max-w-md h-full flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-primary/20 hover:shadow-lg">
