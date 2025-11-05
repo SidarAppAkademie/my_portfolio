@@ -7,7 +7,7 @@ import React, {
   useCallback,
 } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { motion, AnimatePresence, TargetAndTransition } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -108,9 +108,9 @@ export const ProjectCarousel = ({
     resetAutoplay();
   }, [projectsLength, resetAutoplay]);
 
-  function getProjectStyle(index: number): TargetAndTransition {
+  function getProjectStyle(index: number): React.CSSProperties {
     const gap = calculateGap(containerWidth);
-    const maxStickUp = gap * 0.7;
+    const maxStickUp = gap * 0.7; // Adjusted for better visual
     const offset = (index - activeIndex + projectsLength) % projectsLength;
     const isVisible = Math.abs(offset) <= 1 || offset === projectsLength - 1 || offset === 1 - projectsLength;
     
@@ -119,11 +119,11 @@ export const ProjectCarousel = ({
         zIndex: 3,
         opacity: 1,
         pointerEvents: "auto",
-        transform: `translateX(0px) translateY(0px) scale(1) rotateY(0deg)`,
+        transform: `translateX(0px) translateY(-${maxStickUp * 0.3}px) scale(1) rotateY(0deg)`,
       };
     }
     
-    if ((activeIndex - 1 + projectsLength) % projectsLength === index) { // Sol taraftaki proje
+    if ((activeIndex - 1 + projectsLength) % projectsLength === index) { // Left item
       return {
         zIndex: 2,
         opacity: 0.8,
@@ -132,7 +132,7 @@ export const ProjectCarousel = ({
       };
     }
     
-    if ((activeIndex + 1) % projectsLength === index) { // Sağ taraftaki proje
+    if ((activeIndex + 1) % projectsLength === index) { // Right item
       return {
         zIndex: 2,
         opacity: 0.8,
@@ -141,7 +141,6 @@ export const ProjectCarousel = ({
       };
     }
 
-    // Görünmeyen projeler
     return {
       zIndex: 1,
       opacity: 0,
@@ -152,26 +151,14 @@ export const ProjectCarousel = ({
 
   return (
     <div className="w-full max-w-5xl relative flex flex-col items-center">
-      <div 
-        className="h-[32rem] sm:h-[34rem] w-full relative" 
-        ref={imageContainerRef} 
-        style={{ 
-          perspective: "1200px",
-          perspectiveOrigin: "center",
-          transformStyle: "preserve-3d"
-        }}>
+      <div className="h-[32rem] sm:h-[34rem] w-full relative" ref={imageContainerRef} style={{ perspective: "1200px" }}>
         {projects.map((project, index) => (
             <motion.div
                 key={project.title + index}
                 className="absolute w-full h-full flex items-center justify-center"
-                style={{ transformStyle: "preserve-3d" }}
+                style={getProjectStyle(index)}
                 initial={false}
-                animate={getProjectStyle(index)}
-                transition={{
-                  duration: 0.8,
-                  ease: [0.4, 0, 0.2, 1],
-                  opacity: { duration: 0.5 }
-                }}
+                transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
              >
                 <Card className="w-[80%] max-w-md h-full flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-primary/20 hover:shadow-lg">
                     {project.image && (
