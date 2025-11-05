@@ -49,8 +49,6 @@ export function AnimatedCard({ className, title, description, icons = [] }: Anim
 function AnimatedIcons({ icons }: { icons: AnimatedCardProps["icons"] }) {
   const [isAnimating, setIsAnimating] = useState(true)
   
-  return
-
   return (
     <div className="p-8 overflow-hidden h-full relative flex items-center justify-center z-10">
       <div className="flex flex-row flex-shrink-0 justify-center items-center gap-4">
